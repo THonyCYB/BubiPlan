@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense & Calendar App</title>
+</head>
+<body>
+  <main>
+    <div id="calendar"></div>
+  </main>
+
+<!-- Modal -->
+<div id="actionModal" class="modal hidden">
+  <div class="modal-content">
+    <h2 id="modalTitle">Seleziona tipo di evento</h2>
+
+    <div id="modalBody">
+      <!-- Pulsanti iniziali -->
+      <div class="modal-buttons">
+        <button id="createExpense">Spesa</button>
+        <button id="createAppointment">Appuntamento</button>
+      </div>
+    </div>
+
+    <button id="closeModal" class="close-btn">Chiudi</button>
+  </div>
+</div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
