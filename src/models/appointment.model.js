@@ -3,41 +3,10 @@ import { supabase } from './supabaseClient.js';
 
 const TABLE_NAME = 'appointments'; // nome tabella in Supabase
 
-// Durate comuni in minuti
-export const APPOINTMENT_DURATIONS = [
-  { value: 15, label: '15 minuti' },
-  { value: 30, label: '30 minuti' },
-  { value: 45, label: '45 minuti' },
-  { value: 60, label: '1 ora' },
-  { value: 90, label: '1 ora 30 min' },
-  { value: 120, label: '2 ore' }
-];
-
-// Promemoria in minuti
-export const REMINDER_OPTIONS = [
-  { value: 0, label: 'Nessun promemoria' },
-  { value: 5, label: '5 minuti prima' },
-  { value: 15, label: '15 minuti prima' },
-  { value: 30, label: '30 minuti prima' },
-  { value: 60, label: '1 ora prima' },
-  { value: 1440, label: '1 giorno prima' }
-];
-
 export async function createAppointment(appointment) {
-  // Valori di default
-  const appointmentData = {
-    title: appointment.title,
-    date: appointment.date,
-    duration: appointment.duration || 30,
-    location: appointment.location || '',
-    description: appointment.description || '',
-    reminder: appointment.reminder || 0,
-    status: 'scheduled'
-  };
-  
   const { data, error } = await supabase
     .from(TABLE_NAME)
-    .insert([appointmentData]);
+    .insert([appointment]);
 
   if (error) {
     console.error('Errore creando appuntamento:', error);
@@ -46,7 +15,7 @@ export async function createAppointment(appointment) {
 
   // Se non ci sono dati restituiti, l'inserimento è comunque riuscito
   if (!data || data.length === 0) {
-    return { ...appointmentData, id: 'temp-' + Date.now() };
+    return { ...appointment, id: 'temp-' + Date.now() };
   }
 
   return data[0];
@@ -63,4 +32,35 @@ export async function getAppointments() {
   }
 
   return data;
+}
+
+export async function deleteAppointment(id) {
+  const { error } = await supabase
+    .from(TABLE_NAME)
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Errore eliminando appuntamento:', error);
+    return false;
+  }
+
+  return true;
+}
+
+export async function updateAppointment(id, appointmentData) {
+  const { data, error } = await supabase
+    .from(TABLE_NAME)
+    .update({
+      title: appointmentData.title,
+      date: appointmentData.date
+    })
+    .eq('id', id);
+
+  if (error) {
+    console.error('Errore aggiornando appuntamento:', error);
+    return null;
+  }
+
+  return true;
 }

@@ -1,6 +1,7 @@
-import { createExpense, EXPENSE_CATEGORIES } from '../models/expense.model.js';
-import { createAppointment, APPOINTMENT_DURATIONS, REMINDER_OPTIONS } from '../models/appointment.model.js';
+import { createExpense } from '../models/expense.model.js';
+import { createAppointment } from '../models/appointment.model.js';
 import { addEventToCalendar } from './calendarHelper.js';
+import { refreshCalendar } from '../controllers/calendar.controller.js';
 
 let selectedDate = null;
 
@@ -38,20 +39,9 @@ function showActionChoice() {
 function showExpenseForm() {
   const modalBody = document.getElementById('modalBody');
   
-  // Genera le opzioni delle categorie
-  const categoryOptions = EXPENSE_CATEGORIES.map(cat => 
-    `<option value="${cat.id}">${cat.icon} ${cat.name}</option>`
-  ).join('');
-  
   modalBody.innerHTML = `
     <div class="modal-form">
-      <input type="text" id="eventTitle" placeholder="Titolo della spesa" />
-      <input type="number" id="eventAmount" placeholder="Importo (€)" step="0.01" min="0" />
-      
-      <select id="eventCategory">
-        <option value="">Seleziona categoria</option>
-        ${categoryOptions}
-      </select>
+      <input type="text" id="eventTitle" placeholder="Descrizione della spesa" />
       
       <div class="modal-buttons">
         <button id="submitExpense">Salva Spesa</button>
@@ -62,20 +52,14 @@ function showExpenseForm() {
 
   document.getElementById('submitExpense').onclick = async () => {
     const title = document.getElementById('eventTitle').value.trim();
-    const amount = parseFloat(document.getElementById('eventAmount').value);
-    const category = document.getElementById('eventCategory').value;
 
-    if (!title) return alert('Inserisci un titolo valido');
-    if (isNaN(amount) || amount <= 0) return alert('Inserisci un importo valido');
-    if (!category) return alert('Seleziona una categoria');
+    if (!title) return alert('Inserisci una descrizione valida');
 
-    const expense = { title, amount, date: selectedDate, category };
+    const expense = { title, date: selectedDate };
     const saved = await createExpense(expense);
     if (saved) {
-      // Aggiungi l'icona della categoria al titolo dell'evento
-      const categoryObj = EXPENSE_CATEGORIES.find(c => c.id === category);
-      const displayTitle = categoryObj ? `${categoryObj.icon} ${title}` : title;
-      addEventToCalendar({ title: displayTitle, start: selectedDate, color: '#66c2b0' });
+      addEventToCalendar({ title, start: selectedDate, color: '#66c2b0' });
+      await refreshCalendar();
     }
     closeModal();
   };
@@ -87,76 +71,26 @@ function showExpenseForm() {
 function showAppointmentForm() {
   const modalBody = document.getElementById('modalBody');
   
-  // Genera le opzioni per durata e promemoria
-  const durationOptions = APPOINTMENT_DURATIONS.map(dur => 
-    `<option value="${dur.value}">${dur.label}</option>`
-  ).join('');
-  
-  const reminderOptions = REMINDER_OPTIONS.map(rem => 
-    `<option value="${rem.value}">${rem.label}</option>`
-  ).join('');
-  
   modalBody.innerHTML = `
     <div class="modal-form">
       <input type="text" id="eventTitle" placeholder="Titolo dell'appuntamento" />
-      
-      <input type="datetime-local" id="eventDateTime" />
-      
-      <select id="eventDuration">
-        <option value="30">Durata (default 30 min)</option>
-        ${durationOptions}
-      </select>
-      
-      <input type="text" id="eventLocation" placeholder="Luogo (opzionale)" />
-      
-      <textarea id="eventDescription" placeholder="Descrizione (opzionale)" rows="3"></textarea>
-      
-      <select id="eventReminder">
-        <option value="0">Promemoria (opzionale)</option>
-        ${reminderOptions}
-      </select>
-      
       <div class="modal-buttons">
         <button id="submitAppointment">Salva Appuntamento</button>
         <button id="cancelForm">Indietro</button>
       </div>
     </div>
   `;
-  
-  // Imposta la data selezionata di default
-  const dateTimeInput = document.getElementById('eventDateTime');
-  const selectedDateTime = new Date(selectedDate);
-  selectedDateTime.setHours(9, 0, 0, 0); // 09:00 di default
-  dateTimeInput.value = selectedDateTime.toISOString().slice(0, 16);
 
   document.getElementById('submitAppointment').onclick = async () => {
     const title = document.getElementById('eventTitle').value.trim();
-    const dateTime = document.getElementById('eventDateTime').value;
-    const duration = parseInt(document.getElementById('eventDuration').value) || 30;
-    const location = document.getElementById('eventLocation').value.trim();
-    const description = document.getElementById('eventDescription').value.trim();
-    const reminder = parseInt(document.getElementById('eventReminder').value) || 0;
-
-    if (!title) return alert('Inserisci un titolo valido');
-    if (!dateTime) return alert('Seleziona data e ora');
-
-    const appointment = { 
-      title, 
-      date: dateTime, 
-      duration, 
-      location, 
-      description, 
-      reminder
-    };
     
+    if (!title) return alert('Inserisci un titolo valido');
+
+    const appointment = { title, date: selectedDate };
     const saved = await createAppointment(appointment);
     if (saved) {
-      addEventToCalendar({ 
-        title, 
-        start: dateTime, 
-        color: '#4caf9e',
-        duration: duration
-      });
+      addEventToCalendar({ title, start: selectedDate, color: '#4caf9e' });
+      await refreshCalendar();
     }
     closeModal();
   };
@@ -167,4 +101,78 @@ function showAppointmentForm() {
 export function closeModal() {
   const modal = document.getElementById('actionModal');
   modal.classList.add('hidden');
+}
+
+export function showEditModal(event) {
+  const modal = document.getElementById('actionModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalBody = document.getElementById('modalBody');
+  
+  modalTitle.textContent = 'Modifica evento';
+  
+  // Determine if it's an expense or appointment
+  const eventType = event.extendedProps?.type || 'expense';
+  
+  modalBody.innerHTML = `
+    <div class="modal-form">
+      <input type="text" id="eventTitle" placeholder="Titolo" value="${event.title}" />
+      <div class="modal-buttons">
+        <button id="saveEdit">Salva Modifiche</button>
+        <button id="cancelEdit">Annulla</button>
+      </div>
+    </div>
+  `;
+  
+  // Show the modal
+  modal.classList.remove('hidden');
+  
+  // Add event listeners
+  document.getElementById('saveEdit').onclick = async () => {
+    const title = document.getElementById('eventTitle').value.trim();
+    
+    if (!title) return alert('Inserisci un titolo valido');
+    
+    try {
+      let result;
+      if (eventType === 'expense') {
+        // Update expense
+        const expenseModule = await import('../models/expense.model.js');
+        // Convert date to proper format, getting the date part only
+        let dateStr;
+        if (event.start instanceof Date) {
+          dateStr = `${event.start.getFullYear()}-${String(event.start.getMonth() + 1).padStart(2, '0')}-${String(event.start.getDate()).padStart(2, '0')}`;
+        } else {
+          dateStr = event.start.split('T')[0];
+        }
+        result = await expenseModule.updateExpense(event.id, { title, date: dateStr });
+      } else {
+        // Update appointment
+        const appointmentModule = await import('../models/appointment.model.js');
+        // Convert date to proper format, getting the date part only
+        let dateStr;
+        if (event.start instanceof Date) {
+          dateStr = `${event.start.getFullYear()}-${String(event.start.getMonth() + 1).padStart(2, '0')}-${String(event.start.getDate()).padStart(2, '0')}`;
+        } else {
+          dateStr = event.start.split('T')[0];
+        }
+        result = await appointmentModule.updateAppointment(event.id, { title, date: dateStr });
+      }
+      
+      if (result) {
+        alert('Evento aggiornato con successo!');
+        await refreshCalendar();
+        closeModal(); // Close the modal after successful update
+      } else {
+        alert('Errore durante l\'aggiornamento');
+      }
+    } catch (err) {
+      console.error('Errore durante l\'aggiornamento:', err);
+      alert('Errore durante l\'aggiornamento');
+    }
+  };
+  
+  document.getElementById('cancelEdit').onclick = () => {
+    modal.classList.add('hidden');
+    showActionChoice();
+  };
 }

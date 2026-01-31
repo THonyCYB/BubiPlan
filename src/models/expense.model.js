@@ -3,37 +3,26 @@ import { supabase } from './supabaseClient.js';
 
 const TABLE_NAME = 'expenses'; // nome tabella in Supabase
 
-// Categorie predefinite per le spese
-export const EXPENSE_CATEGORIES = [
-  { id: 'food', name: 'Cibo', icon: '🍽️' },
-  { id: 'transport', name: 'Trasporti', icon: '🚗' },
-  { id: 'entertainment', name: 'Intrattenimento', icon: '🎮' },
-  { id: 'shopping', name: 'Shopping', icon: '🛍️' },
-  { id: 'health', name: 'Salute', icon: '🏥' },
-  { id: 'utilities', name: 'Bollette', icon: '💡' },
-  { id: 'other', name: 'Altro', icon: '📦' }
-];
-
 export async function createExpense(expense) {
-  console.log('Tentativo di creare spesa con dati:', expense);
+  // Tabella semplificata: solo title, date e note opzionale
+  const expenseData = {
+    title: expense.title,
+    date: expense.date,
+    note: expense.note || ''
+  };
   
   const { data, error } = await supabase
     .from(TABLE_NAME)
-    .insert([expense]);
+    .insert([expenseData]);
 
   if (error) {
     console.error('Errore creando spesa:', error);
-    console.error('Dati inviati:', expense);
     return null;
   }
 
-  console.log('Risposta dal database:', data);
-  
   // Se non ci sono dati restituiti, l'inserimento è comunque riuscito
-  // Restituiamo l'oggetto originale con un ID fittizio
   if (!data || data.length === 0) {
-    console.log('Inserimento riuscito, nessun dato restituito');
-    return { ...expense, id: 'temp-' + Date.now() };
+    return { ...expenseData, id: 'temp-' + Date.now() };
   }
 
   return data[0];
@@ -50,4 +39,36 @@ export async function getExpenses() {
   }
 
   return data;
+}
+
+export async function deleteExpense(id) {
+  const { error } = await supabase
+    .from(TABLE_NAME)
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Errore eliminando spesa:', error);
+    return false;
+  }
+
+  return true;
+}
+
+export async function updateExpense(id, expenseData) {
+  const { data, error } = await supabase
+    .from(TABLE_NAME)
+    .update({
+      title: expenseData.title,
+      date: expenseData.date,
+      note: expenseData.note || ''
+    })
+    .eq('id', id);
+
+  if (error) {
+    console.error('Errore aggiornando spesa:', error);
+    return null;
+  }
+
+  return true;
 }

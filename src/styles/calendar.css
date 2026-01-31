@@ -9,10 +9,26 @@ html, body {
 
 main {
   height: 100vh;
-  display: flex;
-  flex-direction: column;
   padding: 1rem;
   box-sizing: border-box;
+  margin: 0;
+}
+
+#calendar {
+  height: 100%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+
+
+main {
+  height: 100vh;
+  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
 }
 
 /* Calendar container */
@@ -22,6 +38,27 @@ main {
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   overflow: hidden;
+  height: 100%;
+}
+
+.fc {
+  height: 100%;
+}
+
+.fc-view {
+  height: 100%;
+}
+
+.fc-view-harness {
+  height: 100%;
+}
+
+.fc-scroller {
+  height: 100%;
+}
+
+.fc-dayGridMonth-view {
+  height: 100%;
 }
 
 /* Toolbar minimal */
@@ -110,24 +147,13 @@ main {
   color: #3d8a7f; /* verde scuro */
 }
 
-.modal-form input, .modal-form select, .modal-form textarea {
+.modal-form input {
   width: 100%;
   padding: 0.5rem 0.75rem;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1rem;
   margin-bottom: 0.75rem;
-}
-
-.modal-form select {
-  background-color: white;
-  cursor: pointer;
-}
-
-.modal-form textarea {
-  resize: vertical;
-  font-family: inherit;
-  min-height: 80px;
 }
 
 .modal-buttons {

@@ -8,3 +8,7 @@ export function addEventToCalendar(event) {
   if (!calendarInstance) return;
   calendarInstance.addEvent(event);
 }
+
+export function getCalendarInstance() {
+  return calendarInstance;
+}
