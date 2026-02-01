@@ -2,8 +2,18 @@ import { initCalendarView } from '../views/calendar.view.js';
 import { getExpenses } from '../models/expense.model.js';
 import { getAppointments } from '../models/appointment.model.js';
 
+import { getCurrentUser } from '../models/auth.model.js';
+
 export async function loadEventsAndRender() {
-  // Carica tutti gli eventi dal database
+  // Ottieni l'utente corrente
+  const { data: { user } } = await getCurrentUser();
+  
+  if (!user) {
+    console.error('Utente non autenticato');
+    return [];
+  }
+  
+  // Carica tutti gli eventi dal database per l'utente corrente
   const expenses = await getExpenses();
   const appointments = await getAppointments();
   
