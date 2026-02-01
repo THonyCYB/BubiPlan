@@ -1,7 +1,7 @@
-import { Calendar } from 'https://unpkg.com/@fullcalendar/core@6.1.11/dist/main.mjs';
-import dayGridPlugin from 'https://unpkg.com/@fullcalendar/daygrid@6.1.11/dist/main.mjs';
-import timeGridPlugin from 'https://unpkg.com/@fullcalendar/timegrid@6.1.11/dist/main.mjs';
-import interactionPlugin from 'https://unpkg.com/@fullcalendar/interaction@6.1.11/dist/main.mjs';
+import { Calendar } from 'https://esm.sh/@fullcalendar/core@6.1.11';
+import dayGridPlugin from 'https://esm.sh/@fullcalendar/daygrid@6.1.11';
+import timeGridPlugin from 'https://esm.sh/@fullcalendar/timegrid@6.1.11';
+import interactionPlugin from 'https://esm.sh/@fullcalendar/interaction@6.1.11';
 // L'import del CSS viene rimosso da qui e andrà gestito nell'HTML
 import { setCalendarInstance } from './calendarHelper.js';
 
