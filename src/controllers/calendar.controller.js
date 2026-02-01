@@ -1,4 +1,3 @@
-import { initCalendarView } from '../views/calendar.view.js';
 import { getExpenses } from '../models/expense.model.js';
 import { getAppointments } from '../models/appointment.model.js';
 
@@ -39,7 +38,9 @@ let calendarEvents = [];
 
 export async function initCalendarPage() {
   calendarEvents = await loadEventsAndRender();
-  initCalendarView(calendarEvents);
+  // Importa dinamicamente la vista del calendario e la inizializza
+  const calendarViewModule = await import('../views/calendar.view.js');
+  calendarViewModule.initCalendarView(calendarEvents);
 }
 
 export async function refreshCalendar() {

@@ -1,4 +1,3 @@
-import { initCalendarPage } from './controllers/calendar.controller.js';
 import { getCurrentUser, onAuthStateChange, signIn, signUp, forgotPassword, signOut } from './models/auth.model.js';
 
 // Riferimenti agli elementi DOM
@@ -35,8 +34,9 @@ async function showCalendarPage() {
   calendarPage.style.display = 'block';
   
   // Inizializza il calendario
-  await initCalendarPage();
-  
+  // Caricamento dinamico del controller del calendario
+  const calendarController = await import('./controllers/calendar.controller.js');
+  await calendarController.initCalendarPage();
   // Inizializza la navbar
   initNavbar();
   
