@@ -1,8 +1,8 @@
-import { Calendar } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import '../styles/calendar.css';
+import { Calendar } from 'https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.11/index.global.min.js';
+import dayGridPlugin from 'https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.11/index.global.min.js';
+import timeGridPlugin from 'https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.11/index.global.min.js';
+import interactionPlugin from 'https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.11/index.global.min.js';
+// L'import del CSS viene rimosso da qui e andrà gestito nell'HTML
 import { setCalendarInstance } from './calendarHelper.js';
 
 let calendarInstance = null;
