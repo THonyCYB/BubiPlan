@@ -17,16 +17,16 @@
       <div id="authFormContainer">
         <!-- Form di Login -->
         <form id="loginForm" class="auth-form">
-          <input type="email" id="loginEmail" placeholder="Email" required>
-          <input type="password" id="loginPassword" placeholder="Password" required>
+          <input type="email" id="loginEmail" placeholder="Email" required autocomplete="email">
+          <input type="password" id="loginPassword" placeholder="Password" required autocomplete="current-password">
           <button type="submit">Accedi</button>
         </form>
         
         <!-- Form di Registrazione (inizialmente nascosto) -->
         <form id="signupForm" class="auth-form" style="display:none;">
-          <input type="email" id="signupEmail" placeholder="Email" required>
-          <input type="password" id="signupPassword" placeholder="Password" required>
-          <input type="password" id="confirmPassword" placeholder="Conferma Password" required>
+          <input type="email" id="signupEmail" placeholder="Email" required autocomplete="email">
+          <input type="password" id="signupPassword" placeholder="Password" required autocomplete="new-password">
+          <input type="password" id="confirmPassword" placeholder="Conferma Password" required autocomplete="new-password">
           <button type="submit">Registrati</button>
         </form>
         
@@ -82,6 +82,6 @@
     </div>
   </div>
 
-  <script type="module" src="/src/main.js"></script>
+  <script type="module" src="./src/main.js"></script>
 </body>
 </html>
