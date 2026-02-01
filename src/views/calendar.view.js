@@ -1,4 +1,4 @@
-import { Calendar } from 'https://esm.sh/@fullcalendar/core@6.1.11';
+import { Calendar } from 'https://esm.sh/@fullcalendar/core@6.1.11?deps=@fullcalendar/daygrid@6.1.11,@fullcalendar/timegrid@6.1.11,@fullcalendar/interaction@6.1.11';
 import dayGridPlugin from 'https://esm.sh/@fullcalendar/daygrid@6.1.11';
 import timeGridPlugin from 'https://esm.sh/@fullcalendar/timegrid@6.1.11';
 import interactionPlugin from 'https://esm.sh/@fullcalendar/interaction@6.1.11';
