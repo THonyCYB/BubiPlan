@@ -66,31 +66,9 @@ function showEventActionsModal(event) {
   document.getElementById('deleteEventBtn').addEventListener('click', () => {
     // Confirm and delete event
     if (confirm('Sei sicuro di voler eliminare questo evento?')) {
-      import('../models/expense.model.js').then(expenseModule => {
-        import('../models/appointment.model.js').then(appointmentModule => {
-          if (event.extendedProps.type === 'expense') {
-            expenseModule.deleteExpense(event.id).then(async () => {
-              alert('Evento eliminato con successo!');
-              import('../controllers/calendar.controller.js').then(controllerModule => {
-                controllerModule.refreshCalendar();
-              });
-            }).catch(err => {
-              console.error('Errore durante l\'eliminazione della spesa:', err);
-              alert('Errore durante l\'eliminazione');
-            });
-          } else {
-            appointmentModule.deleteAppointment(event.id).then(async () => {
-              alert('Evento eliminato con successo!');
-              import('../controllers/calendar.controller.js').then(controllerModule => {
-                controllerModule.refreshCalendar();
-              });
-            }).catch(err => {
-              console.error('Errore durante l\'eliminazione dell\'appuntamento:', err);
-              alert('Errore durante l\'eliminazione');
-            });
-          }
-        });
-      });
+      // Chiudi la modale prima di iniziare l'eliminazione
+      modal.classList.add('hidden');
+      handleDeleteEvent(event);
     }
   });
 }
