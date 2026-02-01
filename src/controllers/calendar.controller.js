@@ -46,13 +46,11 @@ export async function initCalendarPage() {
 export async function refreshCalendar() {
   calendarEvents = await loadEventsAndRender();
   
-  // Get the calendar instance and re-render with new events
-  import('../views/calendarHelper.js').then(helperModule => {
-    const calendar = helperModule.getCalendarInstance();
-    if (calendar) {
-      calendar.removeAllEvents();
-      calendar.addEventSource(calendarEvents);
-      calendar.refetchEvents();
-    }
-  });
+  // Ottieni l'istanza del calendario e riesegui il rendering con i nuovi eventi
+  const helperModule = await import('../views/calendarHelper.js');
+  const calendar = helperModule.getCalendarInstance();
+  if (calendar) {
+    calendar.removeAllEvents();
+    calendar.addEventSource(calendarEvents);
+  }
 }
