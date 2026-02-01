@@ -1,7 +1,7 @@
-import { Calendar } from 'https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.11/index.global.min.js';
-import dayGridPlugin from 'https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.11/index.global.min.js';
-import timeGridPlugin from 'https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.11/index.global.min.js';
-import interactionPlugin from 'https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.11/index.global.min.js';
+import { Calendar } from 'https://unpkg.com/@fullcalendar/core@6.1.11/main.mjs';
+import dayGridPlugin from 'https://unpkg.com/@fullcalendar/daygrid@6.1.11/main.mjs';
+import timeGridPlugin from 'https://unpkg.com/@fullcalendar/timegrid@6.1.11/main.mjs';
+import interactionPlugin from 'https://unpkg.com/@fullcalendar/interaction@6.1.11/main.mjs';
 // L'import del CSS viene rimosso da qui e andrà gestito nell'HTML
 import { setCalendarInstance } from './calendarHelper.js';
 
