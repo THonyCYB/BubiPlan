@@ -93,9 +93,120 @@ html, body {
   text-decoration: underline;
 }
 
+/* Stili per la navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: #4caf9e;
+  color: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.nav-left h3 {
+  margin: 0;
+  color: white;
+  font-size: 1.3rem;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.theme-btn:hover {
+  background-color: rgba(255,255,255,0.2);
+}
+
+.profile-dropdown {
+  position: relative;
+}
+
+.profile-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.profile-btn.custom-icon {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: transparent;
+}
+
+.profile-btn:hover {
+  background-color: rgba(255,255,255,0.2);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 0.5rem 0;
+  min-width: 200px;
+  display: none;
+  flex-direction: column;
+  z-index: 1001;
+}
+
+.dropdown-menu.show {
+  display: flex;
+}
+
+.dropdown-menu button {
+  background: none;
+  border: none;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  cursor: pointer;
+  color: #333;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+#profilePictureInput {
+  display: none;
+}
+
+.dropdown-menu button:last-child {
+  border-bottom: none;
+}
+
+.dropdown-menu button:hover {
+  background-color: #f5f5f5;
+}
+
 /* Stili per la pagina principale */
-main {
-  height: 100vh;
+#calendarPage > main {
+  height: calc(100vh - 70px);
   padding: 1rem;
   box-sizing: border-box;
   margin: 0;
@@ -107,6 +218,69 @@ main {
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   overflow: hidden;
+}
+
+/* Modalità scura */
+.dark-mode {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.dark-mode .navbar {
+  background-color: #2c2c2c;
+}
+
+.dark-mode .dropdown-menu {
+  background-color: #2c2c2c;
+  color: #ffffff;
+}
+
+.dark-mode .dropdown-menu button {
+  color: #ffffff;
+  background-color: #2c2c2c;
+}
+
+.dark-mode .dropdown-menu button:hover {
+  background-color: #3d3d3d;
+}
+
+.dark-mode #calendar {
+  background-color: #2c2c2c;
+  color: #ffffff;
+}
+
+.dark-mode .fc {
+  background-color: #2c2c2c;
+  color: #ffffff;
+}
+
+.dark-mode .fc-toolbar {
+  background-color: #3d3d3d !important;
+  color: #ffffff;
+}
+
+.dark-mode .fc-button {
+  background-color: #4a4a4a;
+  color: #ffffff;
+  border: 1px solid #555;
+}
+
+.dark-mode .modal {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.dark-mode .modal-content {
+  background-color: #2c2c2c;
+  color: #ffffff;
+}
+
+.dark-mode .auth-container {
+  background-color: #1a1a1a;
+}
+
+.dark-mode .auth-card {
+  background: #2c2c2c;
+  color: #ffffff;
 }
 
 

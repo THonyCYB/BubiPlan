@@ -36,9 +36,34 @@
   </div>
   
   <!-- Pagina principale del calendario (inizialmente nascosta) -->
-  <main id="calendarPage" style="display:none;">
-    <div id="calendar"></div>
-  </main>
+  <div id="calendarPage" style="display:none;">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="nav-left">
+        <h3>BubiPlanner</h3>
+      </div>
+      <div class="nav-right">
+        <button id="themeToggle" class="theme-btn">
+          <span>☀️</span>
+        </button>
+        <div class="profile-dropdown">
+          <button id="profileBtn" class="profile-btn">
+            👤
+          </button>
+          <div id="profileMenu" class="dropdown-menu">
+            <input type="file" id="profilePictureInput" accept="image/*" style="display: none;">
+            <button id="uploadPicture">Carica Immagine</button>
+            <button id="takePicture">Scatta Foto</button>
+            <button id="logoutBtn">Logout</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    <main>
+      <div id="calendar"></div>
+    </main>
+  </div>
 
   <!-- Modal -->
   <div id="actionModal" class="modal hidden">
