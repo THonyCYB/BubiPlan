@@ -1,7 +1,7 @@
-import { Calendar } from 'https://unpkg.com/@fullcalendar/core@6.1.11/main.mjs';
-import dayGridPlugin from 'https://unpkg.com/@fullcalendar/daygrid@6.1.11/main.mjs';
-import timeGridPlugin from 'https://unpkg.com/@fullcalendar/timegrid@6.1.11/main.mjs';
-import interactionPlugin from 'https://unpkg.com/@fullcalendar/interaction@6.1.11/main.mjs';
+import { Calendar } from 'https://unpkg.com/@fullcalendar/core@6.1.11/dist/main.mjs';
+import dayGridPlugin from 'https://unpkg.com/@fullcalendar/daygrid@6.1.11/dist/main.mjs';
+import timeGridPlugin from 'https://unpkg.com/@fullcalendar/timegrid@6.1.11/dist/main.mjs';
+import interactionPlugin from 'https://unpkg.com/@fullcalendar/interaction@6.1.11/dist/main.mjs';
 // L'import del CSS viene rimosso da qui e andrà gestito nell'HTML
 import { setCalendarInstance } from './calendarHelper.js';
 
@@ -93,6 +93,30 @@ function showEventActionsModal(event) {
       });
     }
   });
+}
+
+async function handleDeleteEvent(event) {
+  try {
+    const { type, id } = event.extendedProps;
+    let deleteFunction;
+
+    if (type === 'expense') {
+      const { deleteExpense } = await import('../models/expense.model.js');
+      deleteFunction = deleteExpense;
+    } else {
+      const { deleteAppointment } = await import('../models/appointment.model.js');
+      deleteFunction = deleteAppointment;
+    }
+
+    await deleteFunction(event.id);
+    alert('Evento eliminato con successo!');
+
+    const { refreshCalendar } = await import('../controllers/calendar.controller.js');
+    refreshCalendar();
+  } catch (err) {
+    console.error('Errore durante l\'eliminazione:', err);
+    alert('Errore durante l\'eliminazione');
+  }
 }
 
 function formatDate(date) {
